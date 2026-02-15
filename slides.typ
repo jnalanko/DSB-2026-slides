@@ -278,7 +278,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 *Lemma 2.* _Given a set of distinct sets $A_0, dots, A_(N-1)$, the probability that there exists two sets $A_i != A_j$ such that $F(A_i) = F(A_j)$ is at most $N^2 / 2^(ell+1)$, where $ell$ is the length of a fingerprint._
   ]
 
-  For example, for $ell = 128$ and $N = 10^9$, we have a collision probability of at most $10^18$ / $2^129$ $ approx 1.47 dot 10^(-21)$.
+  For example, for $ell = 128$ and $N = 10^9$, we have a collision probability of at most $10^18$ / $2^129$ $ approx 1.47 dot 10^(-21) approx$ don't worry about it.
 ]
 
 #slide[
