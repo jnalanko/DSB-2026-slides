@@ -38,13 +38,13 @@
 
 // --- Background ---
 #slide[
-  == Background
+  == Colored $k$-mers 
 
-- Way to index massive bacterial datasets
-- Each genome is a color. Each k-mer is associated with a set of colors.
-- The color set of a k-mer is the set of color associated with it.
-- Interesting object: the set of distinct color sets
-- Key to compressing the data structure
+- Way to index massive bacterial datasets.
+- Each genome is a color. Each $k$-mer is associated with a set of colors.
+- The color set of a $k$-mer is the set of color associated with it.
+- Interesting object: the set of distinct color sets.
+- Key to compressing the data structure.
 
 ]
 
@@ -242,7 +242,7 @@
 We need an update function $g$ that takes a partial fingerprint $x$ and adds a color $c$ to the fingerprint. Requirements:
 
 - *Commutative*: $g(g(x, c_1), c_2) = g(g(x, c_2), c_1)$.
-- *Atomically* updateable: $x <- g(x, c)$ is an atomic CPU operation.
+- *Atomically updateable*: $x <- g(x, c)$ is an atomic CPU operation.
 - *Collision-resistant*: distinct sets map to distinct fingerprints with high probability.
 
 ]
@@ -309,10 +309,13 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 
   #v(1em)
 
+  We follow a two-step filtering appoach from $k$-mers to key $k$-mers, to _sufficient_ $k$-mers.
+
   1. Find the key $k$-mers
-  2. Build compute color set fingerprints of the key $k$-mers.
-  3. Deduplicate the fingerprints.
-  4. Build one color set for each distinct fingerprint, directly into a *compressed form*.
+  2. Build color set fingerprints of the key $k$-mers.
+  3. Deduplicate the fingerprints $->$ sufficient $k$-mers.
+  
+  Finally, we build one color set for each distinct fingerprint, directly into a *compressed form*.
 ]
 
 #slide[
@@ -342,7 +345,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 - *Implementation details*: 
   - SBWT was used as the perfect hash function on $k$-mers and for the dBg neighbor lookup.
   - Options to build fully in memory, or by writing the final structure to disk in pieces. 
-- *Baselines*: Bifrost, GGCAT 2
+- *Baselines*: Bifrost, GGCAT 2.
 ]
 
 #slide[
