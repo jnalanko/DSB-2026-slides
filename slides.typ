@@ -289,7 +289,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 
 #slide[
   #image("figures/dbg.drawio.pdf", width: 90%)
-  - The color set change change only when:
+  - The color set can change only when:
     - The graph branches.
     - An input sequence ends or starts.
 ]
