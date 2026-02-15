@@ -282,7 +282,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 ]
 
 #slide[
-  == Adjacent often $k$-mers share the same color set.
+  == Adjacent $k$-mers often share the same color set.
   #v(2em)
   #image("figures/dbg.drawio.pdf", width: 90%)
 ]
