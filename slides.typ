@@ -31,7 +31,7 @@
 
   #v(1em)
   #set text(size: 22pt)
-  Jarno N. Alanko \
+  #underline[Jarno N. Alanko], Simon J. Puglisi \
   #set text(size: 22pt, fill: luma(20))
   University of Helsinki \
 ]
