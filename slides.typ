@@ -23,29 +23,17 @@
   #set align(horizon + center)
   #set text(size: 36pt, weight: "bold", fill: dark-color)
 
-  Your Presentation Title
+  Constructing distinct color sets of $k$-mers via fingerprinting
 
   #v(0.5em)
-  #set text(size: 20pt, weight: "regular", fill: luma(20))
-  Subtitle or Conference Name
+  #set text(size: 22pt, weight: "regular", fill: luma(20))
+  DSB 2026 
 
   #v(1em)
-  #set text(size: 18pt)
-  Author Name \
-  #set text(size: 16pt, fill: luma(20))
-  Institution or Affiliation \
-  February 2026
-]
-
-// --- Outline ---
-#slide[
-  == Outline
-
-  + Background & Motivation
-  + Problem Formulation
-  + Methodology
-  + Results
-  + Conclusion
+  #set text(size: 22pt)
+  Jarno N. Alanko \
+  #set text(size: 22pt, fill: luma(20))
+  University of Helsinki \
 ]
 
 // --- Background ---
@@ -58,14 +46,6 @@
 - Interesting object: the set of distinct color sets
 - Key to compressing the data structure
 
-]
-
-#slide[
-== Color matrix
-- Color matrix: rows are k-mers, column are colors
-- So we want to build to distinct rows
-- It’s easy to build the matrix column by column.
-- But the query is row by row.
 ]
 
 // --- Color Matrix Figure ---
@@ -257,13 +237,13 @@
 ]
 
 #slide[
-== Requirements for the fingerprint function $F$
+== Incremental fingerprinting
 
-- $F$ takes in a fingerprint and a color, and adds the color to the fingerprint.
-- Given set ${c_1, c_2, c_3}$ the fingerprint is $F(F(F(0, c_1), c_2), c_3)$
-- Commutative: $F(F(F(0, c_1), c_2), c_3) = F(F(F(0, c_3), c_2), c_1)$
-- Atomically updateable: $x <- F(x, c)$ is an atomic CPU operation
-- Collision-resistant
+We need an update function $g$ that takes a partial fingerprint $x$ and adds a color $c$ to the fingerprint. Requirements:
+
+- *Commutative*: $g(g(x, c_1), c_2) = g(g(x, c_2), c_1)$.
+- *Atomically* updateable: $x <- g(x, c)$ is an atomic CPU operation.
+- *Collision-resistant*: distinct sets map to distinct fingerprints with high probability.
 
 ]
 
@@ -272,8 +252,9 @@
 
 #v(1.0em)
 
-- *Initialization*: For each color, pick an $l$-bit fingerprint uniformly at random. Denote the fingerprint of color $c$ with $f(c)$.
-- *Fingerprinting*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ is $F(A) = c_1 xor c_2 xor ... xor c_m$, where $xor$ is bitwise xor.
+- *Precomputation*: For each color, pick an $ell$-bit fingerprint uniformly at random. Denote the fingerprint of color $c$ with $f(c)$.
+- *Update function*: Given fingerprint $x$ and color $c$ we update with $g(x, c) = x xor f(c)$, where $xor$ is bitwise xor.
+- *Fingerprint of a set*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ will be $F(A) = c_1 xor c_2 xor ... xor c_m$.
 - *Wishlist*: Incremental #emoji.checkmark, Commutative #emoji.checkmark, Atomically updatable #emoji.checkmark, Collision-resistant: ?
 
 ]
@@ -294,9 +275,90 @@
     stroke: accent-color,
     fill: accent-color.lighten(92%),
   )[
-*Lemma 2.* _Given a set of distinct sets $A_0, dots, A_(N-1)$, the probability that there exists two sets $A_i != A_j$ such that $F(A_i) = F(A_j)$ is at most $N^2 / 2^(ell+1)$, where $l$ is the length of a fingerprint._
+*Lemma 2.* _Given a set of distinct sets $A_0, dots, A_(N-1)$, the probability that there exists two sets $A_i != A_j$ such that $F(A_i) = F(A_j)$ is at most $N^2 / 2^(ell+1)$, where $ell$ is the length of a fingerprint._
   ]
 
   For example, for $ell = 128$ and $N = 10^9$, we have a collision probability of at most $10^18$ / $2^129$ $ approx 1.47 dot 10^(-21)$.
 ]
 
+#slide[
+  == Adjacent often $k$-mers share the same color set.
+  #v(2em)
+  #image("figures/dbg.drawio.pdf", width: 90%)
+]
+
+#slide[
+  #image("figures/dbg.drawio.pdf", width: 90%)
+  - The color set change change only when:
+    - The graph branches.
+    - An input sequence ends or starts.
+]
+
+#slide[
+== Key $k$-mers
+#v(1em)
+  - The color set can change only when:
+    - The graph branches.
+    - An input sequence ends or starts.
+  - If one of the above applies to a $k$-mer, we call it a _key $k$-mer_.
+  - The key k-mers are a color-set covering set of $k$-mers, but not _minimal_.
+]
+
+#slide[
+  == Algorithm
+
+  #v(1em)
+
+  1. Find the key $k$-mers
+  2. Build compute color set fingerprints of the key $k$-mers.
+  3. Deduplicate the fingerprints.
+  4. Build one color set for each distinct fingerprint, directly into a *compressed form*.
+]
+
+#slide[
+  == Required data structure support
+  #v(1em)
+
+  - *Indexing of rows of the color matrix*: A perfect hash function such that $k$-mers in the dataset map to $[0,m)$.
+    - $m >= n$, where $n$ is the number $k$-mers (the color matrix can have unused rows).
+    - $k$-mers not in the dataset can map anywhere. 
+  - *Identifying key $k$-mers*: de Bruijn graph neighbor lookup to check for branching. 
+]
+
+#slide[
+  #set align(horizon + center)
+  #image("figures/phase_1_2_3_overview.drawio.pdf", width: 110%)
+]
+
+#slide[
+  #set align(horizon + center)
+  #image("figures/phase2.pdf", width: 80%)
+]
+
+#slide[
+  == Results
+- *Machine*: 32-core Threadripper PRO 3975WX, 504 GiB RAM, 400MB/s hard drive IO.
+- *Datasets*: Subsets of AllTheBacteria: 1,2,4...,65536 Salmonella genomes, 1,2,4,...,16384 random genomes. 
+- *Implementation details*: 
+  - SBWT was used as the perfect hash function on $k$-mers and for the dBg neighbor lookup.
+  - Options to build fully in memory, or by writing the final structure to disk in pieces. 
+- *Baselines*: Bifrost, GGCAT 2
+]
+
+#slide[
+  TODO: put these on separate slides.
+  #set align(horizon + center)
+  #image("figures/mem_and_time.pdf", width: 100%)
+]
+
+#slide[
+  #set align(horizon + center)
+  #image("figures/speedup.pdf", width: 100%)
+]
+
+/*
+#slide[
+  #set align(horizon + center)
+  #image("figures/key_kmers.pdf", width: 80%)
+]
+*/
