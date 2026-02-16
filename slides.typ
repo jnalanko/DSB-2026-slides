@@ -41,8 +41,7 @@
   == Colored $k$-mers 
 
 - Way to index massive bacterial datasets.
-- Each genome is a color. Each $k$-mer is associated with a set of colors.
-- The color set of a $k$-mer is the set of color associated with it.
+- Each genome is a color. Each $k$-mer is associated with a set of colors (the *color set* of the $k$-mer).
 - Interesting object: the set of distinct color sets.
 - Key to compressing the data structure.
 
@@ -254,7 +253,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 
 - *Precomputation*: For each color, pick an $ell$-bit fingerprint uniformly at random. Denote the fingerprint of color $c$ with $f(c)$.
 - *Update function*: Given fingerprint $x$ and color $c$ we update with $g(x, c) = x xor f(c)$, where $xor$ is bitwise xor.
-- *Fingerprint of a set*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ will be $F(A) = c_1 xor c_2 xor ... xor c_m$.
+- *Fingerprint of a set*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ will be $F(A) = f(c_1) xor f(c_2) xor ... xor (c_m)$.
 - *Wishlist*: Incremental #emoji.checkmark, Commutative #emoji.checkmark, Atomically updatable #emoji.checkmark, Collision-resistant: ?
 
 ]
@@ -349,6 +348,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 - *Implementation details*: 
   - SBWT was used as the perfect hash function on $k$-mers and for the dBg neighbor lookup.
   - Options to build fully in memory, or by writing the final structure to disk in pieces. 
+  - Rust #text(fill: orange)[#emoji.crab].
 - *Baselines*: Bifrost, GGCAT 2.
 ]
 
@@ -361,6 +361,23 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 #slide[
   #set align(horizon + center)
   #image("figures/speedup.pdf", width: 100%)
+]
+
+#slide[
+  = Conclusion
+  #v(1em)
+
+  Our method provides:
+
+  - Deduplication of color sets even across unitigs.
+  - Independent parallel threads.
+  - Low RAM.
+  - Construction directly into sparse-dense form.
+
+  Future work:
+
+  - Alternative implementations, e.g. based on Sshash. 
+  - Better compression in the final form.
 ]
 
 /*
