@@ -254,7 +254,17 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 - *Precomputation*: For each color, pick an $ell$-bit fingerprint uniformly at random. Denote the fingerprint of color $c$ with $f(c)$.
 - *Update function*: Given fingerprint $x$ and color $c$ we update with $g(x, c) = x xor f(c)$, where $xor$ is bitwise xor.
 - *Fingerprint of a set*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ will be $F(A) = f(c_1) xor f(c_2) xor ... xor (c_m)$.
-#pause
+
+]
+
+#slide[
+== Fingerprinting scheme
+
+#v(1.0em)
+
+- *Precomputation*: For each color, pick an $ell$-bit fingerprint uniformly at random. Denote the fingerprint of color $c$ with $f(c)$.
+- *Update function*: Given fingerprint $x$ and color $c$ we update with $g(x, c) = x xor f(c)$, where $xor$ is bitwise xor.
+- *Fingerprint of a set*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ will be $F(A) = f(c_1) xor f(c_2) xor ... xor (c_m)$.
 - *Wishlist*: Incremental #emoji.checkmark, Commutative #emoji.checkmark, Atomically updatable #emoji.checkmark, Collision-resistant: ?
 
 ]
