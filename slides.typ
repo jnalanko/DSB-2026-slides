@@ -254,6 +254,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 - *Precomputation*: For each color, pick an $ell$-bit fingerprint uniformly at random. Denote the fingerprint of color $c$ with $f(c)$.
 - *Update function*: Given fingerprint $x$ and color $c$ we update with $g(x, c) = x xor f(c)$, where $xor$ is bitwise xor.
 - *Fingerprint of a set*: The fingerprint of a _set_ $A = {c_1, c_2, ..., c_m}$ will be $F(A) = f(c_1) xor f(c_2) xor ... xor (c_m)$.
+#pause
 - *Wishlist*: Incremental #emoji.checkmark, Commutative #emoji.checkmark, Atomically updatable #emoji.checkmark, Collision-resistant: ?
 
 ]
@@ -304,7 +305,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
     - The graph branches.
     - An input sequence ends or starts.
   - If one of the above applies to a $k$-mer, we call it a _key $k$-mer_.
-  - The key k-mers are a color-set covering set of $k$-mers, but not _minimal_.
+  - The key k-mers are a *color-set covering set* of $k$-mers, but not _minimal_.
 ]
 
 #slide[
@@ -333,6 +334,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 
 #slide[
   #set align(horizon + center)
+  todo: rename box
   #image("figures/phase_1_2_3_overview.drawio.pdf", width: 110%)
 ]
 
