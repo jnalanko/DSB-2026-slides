@@ -247,7 +247,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 ]
 
 #slide[
-== Fingerprinting scheme: Zobrist hashing.
+== Fingerprinting scheme: Zobrist hashing
 
 #v(1.0em)
 
