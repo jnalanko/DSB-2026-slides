@@ -344,13 +344,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 
 #slide[
   #set align(horizon + center)
-  todo: rename box
   #image("figures/phase_1_2_3_overview.drawio.pdf", width: 110%)
-]
-
-#slide[
-  #set align(horizon + center)
-  #image("figures/phase2.pdf", width: 80%)
 ]
 
 #slide[
@@ -365,9 +359,13 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 ]
 
 #slide[
-  TODO: put these on separate slides.
   #set align(horizon + center)
-  #image("figures/mem_and_time.pdf", width: 100%)
+  #image("figures/mem.pdf", width: 100%)
+]
+
+#slide[
+  #set align(horizon + center)
+  #image("figures/time.pdf", width: 100%)
 ]
 
 #slide[
