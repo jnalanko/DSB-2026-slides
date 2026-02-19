@@ -274,7 +274,7 @@ We need an update function $g$ that takes a partial fingerprint $x$ and adds a c
 
   #v(1.0em)
 
-  The fingerprint function $F$ is *universal hash family* over the single-color fingerprint picks $f(c)$. By the union bound:
+  The fingerprint function $F$ is a *universal hash family* over the single-color fingerprint picks $f(c)$. By the union bound:
 
   #v(0.5em)
 
